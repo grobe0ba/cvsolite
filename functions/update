@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#Ensure correct key permissions
+cd /home/config/keys
+cvs -d /cvs up -PCd
+chmod -R 700 authorized_keys
+
+#Update config scripts
+cd /home/config/config
+cvs -d /cvs up -PCd
+chmod -R 755 cvs-config
+
+#Set security on repos
+for x in $(cat sec_repos|xargs);
+do
+        chown -R config /cvs/$x
+        chmod -R 700 /cvs/$x
+done

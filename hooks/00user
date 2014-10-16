@@ -1,0 +1,33 @@
+#!/bin/sh
+# Rename this to 00users.hook to enable
+
+# This hook set the system up for use for single-user repository hosting.
+# For every user in userlist it ensures that there is a directory in the root of
+# the repo named after the assigned username # After it is confirmed that the
+# directory exists, the folder (and everything under it) is set to be owned by
+# user:anoncvs , mode 755.
+
+# TODO
+# Integrate this into install.sh so that each user will still have their own
+# group created, but default to anoncvs with a config file specifying additional
+# users that are authorized to commit to the repo. Mode would then be 775.
+
+cat userlist|
+while read LINE
+do
+	USER=$(echo $LINE|cut -d' ' -f1)
+
+	if [ ! -d "/cvs/$USER" ];
+	then
+	    cd /tmp
+	    mkdir $USER
+	    cd $USER
+	    touch README
+	    cvs -d /cvs import $USER $USER v1
+	    cd /home/config/config
+	    rm -rf /tmp/$USER
+	fi
+	
+	chown -R $USER:anoncvs /cvs/$USER
+	chmod -R 755 /cvs/$USER
+done

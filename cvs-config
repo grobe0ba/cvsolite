@@ -1,0 +1,69 @@
+#!/bin/sh
+
+#Ensure correct key permissions
+cd /home/config/keys
+cvs -d /cvs up -d
+chmod -R 700 authorized_keys
+
+#Update config scripts
+cd /home/config/config
+cvs -d /cvs up -d
+chmod -R 755 cvs-config
+
+#Set security on repos
+for x in $(cat sec_repos|xargs);
+do
+	chown -R config /cvs/$x
+	chmod -R 700 /cvs/$x
+done
+
+
+REV=$(cvs -d /cvs log -h userlist|grep head|cut -d' ' -f2)
+HEAD1=$(echo $REV |cut -d'.' -f1)
+HEAD2=$(echo $REV |cut -d'.' -f2)
+REV2=$((HEAD2-1))
+
+if [ $REV2 -lt 0 ];
+then
+	REV2=0
+	REV1=$((HEAD1-1))
+else
+	REV1=$HEAD1
+fi
+
+PREV="$REV1.$REV2"
+
+cvs -d /cvs diff -r$PREV userlist | grep '^>' |
+while read LINE
+do
+	USER=$(echo $LINE|cut -d' ' -f2)
+	KEY=$(echo $LINE|cut -d' ' -f3,4)
+	sudo pw useradd $USER -m -g anoncvs -s /usr/local/sbin/cvsshell -h -
+	sudo mkdir /home/$USER/.ssh
+	TEMP=$(mktemp key.XXXXXXXX)
+	echo "$KEY" > $TEMP
+	sudo cp $TEMP /home/$USER/.ssh/authorized_keys
+	rm $TEMP
+	sudo chmod -R 700 /home/$USER/.ssh
+	sudo chown -R $USER /home/$USER/.ssh
+done
+
+cvs -d /cvs diff -r$PREV userlist | grep '^<' |
+while read LINE
+do
+	USER=$(echo $LINE|cut -d' ' -f2)
+	sudo pw userdel $USER -r
+done
+
+cat userlist|
+while read LINE
+do
+	USER=$(echo $LINE|cut -d' ' -f1)
+	KEY=$(echo $LINE|cut -d' ' -f2,3)
+	TEMP=$(mktemp key.XXXXXX)
+	echo "$KEY" > $TEMP
+	sudo cp $TEMP /home/$USER/.ssh/authorized_keys
+	rm $TEMP
+	sudo chown -R $USER /home/$USER/.ssh
+	sudo chmod -R 700 $USER /home/$USER/.ssh
+done

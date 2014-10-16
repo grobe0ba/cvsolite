@@ -1,0 +1,7 @@
+So, one day I had a crazy idea.
+- What if we had a nifty CVS management tool like gitolite?
+Thus, cvsolite was born.
+=== WARNING ===
+This should be run in a minimum of a chroot, and is currently set up to be run in a FreeBSD jail.
+If you run it on bare hardware, that should be the ONLY thing that runs on there.
+Security was not a concern when I wrote this, it uses sudo to modify user accounts on the fly, as well as using bash. It's basically one big security hole.

@@ -1,0 +1,13 @@
+144,149c144,148
+< Match User anoncvs
+< 	X11Forwarding no
+< 	AllowTcpForwarding no
+< 	PermitTTY no
+< 	ForceCommand /usr/local/sbin/cvsshell
+< 	PermitEmptyPasswords yes
+---
+> #Match User anoncvs
+> #	X11Forwarding no
+> #	AllowTcpForwarding no
+> #	PermitTTY no
+> #	ForceCommand cvs server

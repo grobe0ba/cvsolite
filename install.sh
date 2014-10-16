@@ -15,7 +15,14 @@ chmod -R 755 /usr/local/sbin/cvsshell
 
 echo /usr/local/sbin/cvsshell >> /etc/shells
 
-patch -R /etc/ssh/sshd_config < sshd_config.patch
+cat >>/etc/ssh/sshd_config <<EOF
+Match User anoncvs
+X11Forwarding no
+AllowTcpForwarding no
+PermitTTY no
+ForceCommand /usr/local/sbin/cvsshell
+PermitEmptyPasswords yes
+EOF
 patch -R /etc/pam.d/sshd < sshd.patch
 service sshd restart
 
@@ -40,13 +47,18 @@ cd /tmp
 rm -rf /tmp/keys
 
 mkdir config
+cd config
 cp $IDIR/cvs-config .
+cp -r $IDIR/functions .
+cp -r $IDIR/hooks .
 touch userlist
 cat >sec_repos <<EOF
 config
 keys
 EOF
 chmod -R 755 cvs-config
+chmod -R 755 functions/*
+chmod -R 755 hooks/*
 cvs -d /cvs import -m'Initial import' config config v1
 cd /tmp
 rm -rf /tmp/config

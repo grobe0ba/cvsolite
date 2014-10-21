@@ -1,9 +1,11 @@
 #!/bin/sh
 
-sh /home/config/config/functions/update
-sh /home/config/config/functions/security
+cd /home/config/config
 
-for x in $(find /home/config/config/hooks -name *.hook);
+sh functions/update
+sh functions/security
+
+for x in $(find hooks -name *.hook)
 do
-    sh $x;
+	sh $x
 done

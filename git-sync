@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# This is designed to run from crontab, and mirror a cvs repository into a remote git repository.
+# In my usage case, it pushes to a remote git repository which is read by a Trac instance.
+
+exec >/dev/null 2>&1
+
+cd /home/config
+cp -r /cvs /home/config/
+rm -rf /home/config/cvs/config /home/config/cvs/keys
+cvs2svn -s /home/config/svn /home/config/cvs
+git clone grobe0ba@mars.pulpie.net:/var/trac/git /home/config/git
+cd /home/config/git
+git svn init -T trunk file:///home/config/svn /home/config/git
+git svn fetch
+git rebase remotes/origin/trunk
+git merge remotes/origin/trunk
+git push --all --force
+cd ..
+rm -rf /home/config/git /home/config/svn /home/config/cvs
+date > /home/config/last_run

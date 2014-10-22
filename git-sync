@@ -5,6 +5,8 @@
 
 exec >/dev/null 2>&1
 
+PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
 cd /home/config
 cp -r /cvs /home/config/
 rm -rf /home/config/cvs/config /home/config/cvs/keys

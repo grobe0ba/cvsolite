@@ -1,6 +1,18 @@
 So, one day I had a crazy idea.
 - What if we had a nifty CVS management tool like gitolite?
 Thus, cvsolite was born.
+
+Usage is fairly simple.
+sh install.sh "public key"
+The public key must be in quotes.
+
+After that, checkout the config module.
+To add a user, echo username public key >> userlist
+In the userlist, do NOT put the public key in quotes
+To remove a user, simply remove the line.
+
+If you have a repository you only want the config user to have access to, add it to sec_repos.
+
 === WARNING ===
 This should be run in a minimum of a chroot, and is currently set up to be run in a FreeBSD jail.
 If you run it on bare hardware, that should be the ONLY thing that runs on there.

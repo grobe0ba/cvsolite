@@ -14,7 +14,6 @@ cd /home/config/git
 git svn init -T trunk file:///home/config/svn /home/config/git
 git svn fetch
 git rebase remotes/origin/trunk
-git merge remotes/origin/trunk
 git push --all --force
 cd ..
 rm -rf /home/config/git /home/config/svn /home/config/cvs

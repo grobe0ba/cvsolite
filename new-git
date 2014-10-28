@@ -6,6 +6,8 @@
 # Since this script takes only a few seconds, there won't be any conflict.
 # The post-receive hook in my case resyncs trac to the repo.
 
+exec >/dev/null 2>&1
+
 rm -rf /var/trac/git
 /home/grobe0ba/opt/mars/bin/git init --bare /var/trac/git
 sudo chown -R grobe0ba:www-data /var/trac

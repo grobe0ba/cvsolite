@@ -7,7 +7,7 @@
 # The post-receive hook in my case resyncs trac to the repo.
 
 rm -rf /var/trac/git
-git init --bare /var/trac/git
+/home/grobe0ba/opt/mars/bin/git init --bare /var/trac/git
 sudo chown -R grobe0ba:www-data /var/trac
 sudo chmod -R 775 /var/trac
 ln -s /var/trac/post-receive /var/trac/git/hooks/post-receive

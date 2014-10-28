@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# This should be run in the crontab on the git host.
+# The crontab's should be set up to not interfere with each other.
+# My setup has this script run at 0000 every night, with the push side running minutes 1-59 every day.
+# Since this script takes only a few seconds, there won't be any conflict.
+# The post-receive hook in my case resyncs trac to the repo.
+
+rm -rf /var/trac/git
+git init --bare /var/trac/git
+sudo chown -R grobe0ba:www-data /var/trac
+sudo chmod -R 775 /var/trac
+ln -s /var/trac/post-receive /var/trac/git/hooks/post-receive

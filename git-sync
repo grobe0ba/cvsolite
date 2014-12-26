@@ -2,6 +2,21 @@
 
 # This is designed to run from crontab, and mirror a cvs repository into a remote git repository.
 # In my usage case, it pushes to a remote git repository which is read by a Trac instance.
+# You must have git and subversion installed, as well as use public key authentication to the
+# remote host if using SSH
+
+# The remote system should run 'new-git' every hour at the top of the hour to prevent the remote
+# repository from growing exponentially. This script should be run every minute EXCEPT for the
+# top of the hour.
+
+# Local crontab for 'config' user
+# 1-59 * * * * /home/config/git-sync
+
+# Remote crontab
+# 0 * * * * /path/to/new-git
+
+
+REMOTE_REPO_PATH=grobe0ba@mars.pulpie.net:/var/trac/git
 
 exec >/dev/null 2>&1
 
@@ -9,9 +24,10 @@ PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 cd /home/config
 cp -r /cvs /home/config/
-rm -rf /home/config/cvs/config /home/config/cvs/keys
+for REPO in $(cat /home/config/sec_repos | xargs); do rm -rf /home/config/cvs/$REPO; done
+
 cvs2svn -s /home/config/svn /home/config/cvs
-git clone grobe0ba@mars.pulpie.net:/var/trac/git /home/config/git
+git clone $REMOTE_REPO_PATH /home/config/git
 cd /home/config/git
 git svn init -T trunk file:///home/config/svn /home/config/git
 git svn fetch

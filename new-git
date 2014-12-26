@@ -1,10 +1,12 @@
 #!/bin/sh
 
+# This script looks one directory up from $REPO_PATH for the post-receive script
+
 GIT=/home/grobe0ba/opt/mars/bin/git
 REPO_PATH=/var/trac/git
 
 exec >/dev/null 2>&1
 
 rm -rf $REPO_PATH
-$GIT init --bare /var/trac/git
-ln -s /var/trac/post-receive /var/trac/git/hooks/post-receive
+$GIT init --bare $REPO_PATH
+ln -s $REPO_PATH/../post-receive $REPO_PATH/hooks/post-receive

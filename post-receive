@@ -1,0 +1,5 @@
+#!/bin/sh
+
+TRAC_ENV=/var/trac
+
+trac-admin $TRAC_ENV repository resync cvs

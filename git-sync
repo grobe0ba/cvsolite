@@ -15,6 +15,19 @@
 # Remote crontab
 # 0 * * * * /path/to/new-git
 
+# If you only want to sync a module instead of the entire repository, the following will do the job
+# more efficiently. You simply need to setup a git repository (for instance, clone one from github
+# that you have write access to), make sure your 'origin' remote is set, and away you go. This method
+# provides for incremental imports into git, so there is no growth problem as with using the full-repo
+# method.
+# Note: If you want the commiter names in the Git log to be correct, you'll need an authors file in
+# the following format:
+# commiter_username=Commiter Name <commiter@example.org>
+# grobe0ba=Byron Grobe <grobe0ba@pulpie.net>
+
+# git cvsimport -A /home/config/sync/authors -d /cvs -C /home/config/sync/module module
+# cd /home/config/sync/module && git push
+
 
 REMOTE_REPO_PATH=grobe0ba@mars.pulpie.net:/var/trac/git
 

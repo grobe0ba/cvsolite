@@ -1,6 +1,2 @@
 #!/bin/sh
 cvs server
-if [ "$USER" == "config" ];
-then
-	/home/config/config/cvs-config
-fi

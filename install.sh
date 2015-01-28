@@ -74,3 +74,9 @@ cd /home/config
 sudo -u config cvs -d /cvs co -P config
 sudo -u config cvs -d /cvs co -P keys
 sudo -u config ln -s /home/config/keys/authorized_keys /home/config/.ssh/authorized_keys
+
+cd /tmp
+sudo -u config cvs -d /cvs co -P CVSROOT
+cd CVSROOT
+echo "config /bin/sh -c '/home/config/config/cvs-config &'" >> loginfo
+sudo -u config cvs -d /cvs ci -m "Init" loginfo

@@ -28,6 +28,6 @@ do
 	    rm -rf /tmp/"$USER"
 	fi
 	
-	chown -R "$USER:anoncvs" "/cvs/$USER"
-	chmod -R 755 "/cvs/$USER"
+	sudo chown -R "$USER:anoncvs" "/cvs/$USER"
+	sudo chmod -R 755 "/cvs/$USER"
 done

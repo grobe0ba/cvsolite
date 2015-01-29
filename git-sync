@@ -33,14 +33,14 @@ REMOTE_REPO_PATH=grobe0ba@mars.pulpie.net:/var/trac/git
 
 exec >/dev/null 2>&1
 
-PATH=/usr/local/bin:/usr/local/sbin:$PATH
+PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
 cd /home/config
 cp -r /cvs /home/config/
-for REPO in $(cat /home/config/sec_repos | xargs); do rm -rf /home/config/cvs/$REPO; done
+for REPO in $(xargs < /home/config/sec_repos); do rm -rf "/home/config/cvs/$REPO"; done
 
 cvs2svn -s /home/config/svn /home/config/cvs
-git clone $REMOTE_REPO_PATH /home/config/git
+git clone "$REMOTE_REPO_PATH" /home/config/git
 cd /home/config/git
 git svn init -T trunk file:///home/config/svn /home/config/git
 git svn fetch

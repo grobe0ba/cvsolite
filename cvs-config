@@ -5,7 +5,8 @@ cd /home/config/config
 sh functions/update
 sh functions/security
 
-for x in $(find hooks -name *.hook)
+find hooks -name '*.hook' |
+while read x
 do
-	sh $x
+	sh "$x"
 done

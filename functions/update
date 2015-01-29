@@ -11,8 +11,8 @@ cvs -d /cvs up -PCd
 chmod -R 755 cvs-config
 
 #Set security on repos
-for x in $(cat sec_repos|xargs);
+for x in $(xargs < sec_repos);
 do
-        chown -R config /cvs/$x
-        chmod -R 700 /cvs/$x
+        chown -R config "/cvs/$x"
+        chmod -R 700 "/cvs/$x"
 done

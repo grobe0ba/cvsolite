@@ -15,19 +15,19 @@
 cat userlist|
 while read LINE
 do
-	USER=$(echo $LINE|cut -d' ' -f1)
+	USER=$(echo "$LINE"|cut -d' ' -f1)
 
 	if [ ! -d "/cvs/$USER" ];
 	then
 	    cd /tmp
-	    mkdir $USER
-	    cd $USER
+	    mkdir "$USER"
+	    cd "$USER"
 	    touch README
-	    cvs -d /cvs import $USER $USER v1
+	    cvs -d /cvs import -m "Init" "$USER" "$USER" v1
 	    cd /home/config/config
-	    rm -rf /tmp/$USER
+	    rm -rf /tmp/"$USER"
 	fi
 	
-	chown -R $USER:anoncvs /cvs/$USER
-	chmod -R 755 /cvs/$USER
+	chown -R "$USER:anoncvs" "/cvs/$USER"
+	chmod -R 755 "/cvs/$USER"
 done

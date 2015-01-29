@@ -10,7 +10,7 @@ fi
 
 pkg install -y cvs sudo
 
-cp $IDIR/cvsshell /usr/local/sbin/cvsshell
+cp "$IDIR/cvsshell" /usr/local/sbin/cvsshell
 chmod -R 755 /usr/local/sbin/cvsshell
 
 echo /usr/local/sbin/cvsshell >> /etc/shells
@@ -48,9 +48,9 @@ rm -rf /tmp/keys
 
 mkdir config
 cd config
-cp $IDIR/cvs-config .
-cp -r $IDIR/functions .
-cp -r $IDIR/hooks .
+cp "$IDIR/cvs-config" .
+cp -r "$IDIR/functions" .
+cp -r "$IDIR/hooks" .
 touch userlist
 cat >sec_repos <<EOF
 config

@@ -4,6 +4,7 @@ cd /home/config/config
 
 sh functions/update
 sh functions/security
+sh functions/acls
 
 find hooks -name '*.hook' |
 while read x

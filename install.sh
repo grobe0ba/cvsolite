@@ -52,6 +52,7 @@ cp "$IDIR/cvs-config" .
 cp -r "$IDIR/functions" .
 cp -r "$IDIR/hooks" .
 touch userlist
+touch acls
 cat >sec_repos <<EOF
 config
 keys

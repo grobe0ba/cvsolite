@@ -1,0 +1,38 @@
+#!/bin/sh
+
+REV=$(cvs -d /cvs log -h acls|grep head|cut -d' ' -f2)
+HEAD1=$(echo "$REV" |cut -d'.' -f1)
+HEAD2=$(echo "$REV" |cut -d'.' -f2)
+REV2=$((HEAD2-1))
+
+if [ $REV2 -lt 0 ];
+then
+    REV2=0    REV1=$((HEAD1-1))
+else
+    REV1=$HEAD1
+fi
+
+PREV="$REV1.$REV2"
+
+cvs -d /cvs diff -r"$PREV" acls | grep '^<' |
+while read LINE
+do
+    REPO=$(echo "$LINE" | cut -d' ' -f2)
+    USERS=$(echo "$LINE" | cut -d' ' -f3-)
+    for USER in $USERS
+    do
+	find "/cvs/$REPO" -exec setfacl -x "u:$USER:rwxpDd:allow" {} \;
+    done
+done
+
+
+cat /home/config/config/acls |
+    while read LINE
+    do
+	REPO=$(echo "$LINE" | cut -d' ' -f1)
+	USERS=$(echo "$LINE" | cut -d' ' -f2-)
+	for USER in $USERS
+	do
+	    find "/cvs/$REPO" -exec setfacl -m "u:$USER:rwxpDd:allow" {} \;
+	done
+    done

@@ -12,7 +12,7 @@
 # group created, but default to anoncvs with a config file specifying additional
 # users that are authorized to commit to the repo. Mode would then be 775.
 
-cat userlist|
+cat /home/config/config/userlist|
 while read LINE
 do
 	USER=$(echo "$LINE"|cut -d' ' -f1)

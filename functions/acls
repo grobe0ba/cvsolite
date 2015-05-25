@@ -7,7 +7,8 @@ REV2=$((HEAD2-1))
 
 if [ $REV2 -lt 0 ];
 then
-    REV2=0    REV1=$((HEAD1-1))
+    REV2=0
+    REV1=$((HEAD1-1))
 else
     REV1=$HEAD1
 fi

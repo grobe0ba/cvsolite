@@ -23,7 +23,7 @@ PermitTTY no
 ForceCommand /usr/local/sbin/cvsshell
 PermitEmptyPasswords yes
 EOF
-patch -R /etc/pam.d/sshd < sshd.patch
+patch /etc/pam.d/sshd < sshd.patch
 service sshd restart
 
 pw useradd anoncvs -h - -d /tmp
